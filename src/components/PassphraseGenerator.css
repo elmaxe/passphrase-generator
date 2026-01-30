@@ -85,6 +85,34 @@
   margin: 0;
 }
 
+.char-counter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: -1rem;
+}
+
+.char-count {
+  font-weight: 500;
+}
+
+.space-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.space-toggle input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #0066cc;
+}
+
 .actions {
   display: flex;
   gap: 1rem;

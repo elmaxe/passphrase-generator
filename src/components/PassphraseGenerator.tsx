@@ -6,6 +6,11 @@ export function PassphraseGenerator() {
   const [wordCount, setWordCount] = useState(4);
   const [passphrase, setPassphrase] = useState(() => generatePassphrase(4));
   const [copied, setCopied] = useState(false);
+  const [includeSpaces, setIncludeSpaces] = useState(true);
+
+  const charCount = includeSpaces
+    ? passphrase.length
+    : passphrase.replace(/\s/g, '').length;
 
   const handleRegenerate = useCallback(() => {
     setPassphrase(generatePassphrase(wordCount));
@@ -56,6 +61,18 @@ export function PassphraseGenerator() {
 
       <div className="passphrase-display">
         <p className="passphrase">{passphrase}</p>
+      </div>
+
+      <div className="char-counter">
+        <span className="char-count">{charCount} tecken</span>
+        <label className="space-toggle">
+          <input
+            type="checkbox"
+            checked={includeSpaces}
+            onChange={(e) => setIncludeSpaces(e.target.checked)}
+          />
+          Räkna mellanslag
+        </label>
       </div>
 
       <div className="actions">

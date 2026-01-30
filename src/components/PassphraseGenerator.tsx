@@ -1,5 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { generatePassphrase } from '../utils/generatePassphrase';
+import { calculateCrackTime } from '../utils/calculateCrackTime';
 import './PassphraseGenerator.css';
 
 export function PassphraseGenerator() {
@@ -11,6 +12,15 @@ export function PassphraseGenerator() {
   const charCount = includeSpaces
     ? passphrase.length
     : passphrase.replace(/\s/g, '').length;
+
+  const crackTime = useMemo(() => calculateCrackTime(wordCount), [wordCount]);
+
+  const strengthLabels = {
+    'weak': 'Svag',
+    'moderate': 'Måttlig',
+    'strong': 'Stark',
+    'very-strong': 'Mycket stark',
+  };
 
   const handleRegenerate = useCallback(() => {
     setPassphrase(generatePassphrase(wordCount));
@@ -73,6 +83,26 @@ export function PassphraseGenerator() {
           />
           Räkna mellanslag
         </label>
+      </div>
+
+      <div className="strength-indicator">
+        <div className="strength-header">
+          <span className="strength-label">Styrka:</span>
+          <span className={`strength-value strength-${crackTime.strength}`}>
+            {strengthLabels[crackTime.strength]}
+          </span>
+        </div>
+        <div className="strength-bar-container">
+          <div className={`strength-bar strength-bar-${crackTime.strength}`} />
+        </div>
+        <div className="crack-time">
+          <span className="crack-time-label">Tid att knäcka (2026 GPU):</span>
+          <span className="crack-time-value">{crackTime.formatted}</span>
+        </div>
+        <div className="entropy">
+          <span className="entropy-label">Entropi:</span>
+          <span className="entropy-value">{crackTime.entropy} bitar</span>
+        </div>
       </div>
 
       <div className="actions">
